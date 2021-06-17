@@ -91,22 +91,79 @@ namespace KomodoInsurance.UI
 
         private void DeleteExistingDevTeam()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("Please input existing team ID:");
+            int userInputID = int.Parse(Console.ReadLine());
+
+            bool isSuccessful = _dTRepo.DeleteDev_Team(userInputID);
+            if(isSuccessful)
+            {
+                Console.WriteLine("Dev team is deleted");
+            }
+            else
+            {
+                Console.WriteLine("dev team not deleted");
+            }
         }
 
         private void UpdateExistingDevTeam()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("Please Input existing Dev Team ID:");
+            int userInputID = int.Parse(Console.ReadLine());
+
+            Console.Clear();
+
+            Console.WriteLine("Please Input Dev Team Name");
+            string userInputDevTeamName = Console.ReadLine();
+
+            Dev_Team dev_team = new Dev_Team(userInputDevTeamName);
+            bool isSuccessful = _dTRepo.UpdateDev_Team(userInputID, dev_team);
+
+            if(isSuccessful)
+            {
+                Console.WriteLine("Dev Team has been updated.");
+            }
+            else
+            {
+                Console.WriteLine("Dev Team has failed to update.");
+            }
         }
 
         private void ViewDevTeamByID()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("Please input existing team ID:");
+            int userInputID = int.Parse(Console.ReadLine());
+
+            Dev_Team dev_team = _dTRepo.GetDev_TeamByID(userInputID);
+
+            if (dev_team == null)
+            {
+                Console.WriteLine("Dev Team does not exist.");
+            }
+            Console.Clear();
+            DisplayDevTeamDetails(dev_team);
+            Console.ReadKey();
         }
 
         private void ViewAllDevTeams()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            List<Dev_Team> dev_teams = _dTRepo.GetDev_Teams().ToList();
+            foreach (Dev_Team dev_team in dev_teams)
+            {
+                DisplayDevTeamDetails(dev_team);
+            }
+            Console.ReadKey();
+        }
+
+        private void DisplayDevTeamDetails(Dev_Team dev_team)
+        {
+            Console.WriteLine($"{dev_team.TeamID}\n" +
+                              $"{dev_team.TeamName}\n");
+            Console.WriteLine("******************************************");
+
         }
 
         private void CreateDevTeam()
@@ -299,6 +356,9 @@ namespace KomodoInsurance.UI
 
         private void seed()
         {
+
+            Dev_Team dev_teamA = new Dev_Team("calico");
+
             Developer developerA = new Developer("Joshua_Briggs", DeveloperType.Head_Developer, false);
             Developer developerB = new Developer("James_Anderson", DeveloperType.Body_Developer, false);
             Developer developerC = new Developer("Frederick_Barns", DeveloperType.Body_Developer, false);
@@ -308,6 +368,8 @@ namespace KomodoInsurance.UI
             _dRepo.AddDeveloper(developerB);
             _dRepo.AddDeveloper(developerC);
             _dRepo.AddDeveloper(developerD);
+
+            _dTRepo.AddDev_Team(dev_teamA);
         }
     }
 }

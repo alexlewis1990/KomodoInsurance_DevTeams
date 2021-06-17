@@ -20,5 +20,9 @@ namespace Developer_POCO
             Developers = developers;
 
         }
+
+        public Dev_Team(string userInputDevTeamName)
+        {
+        }
     }
 }
